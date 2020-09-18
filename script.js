@@ -10,7 +10,7 @@
      mobPage = 1,
       $mainright = document.querySelectorAll(".main.right");
     var isMobileDevice = false;
-    if(window.innerWidth <=600) {
+    if(window.innerWidth <=1025) {
       isMobileDevice = true;
     }
 
@@ -59,6 +59,7 @@
       }
   }
 
+  /*********Page change method****************** */
   function pagination(page) {
       var str ='';
       var $allSec = document.querySelectorAll('[data-sec]');
@@ -127,38 +128,44 @@
               }
               if(isMobileDevice) {
                 el.classList.add("mob-cnt-animate");
+                $allmain.forEach(function(el) {
+                  el.classList.remove("mob-bg");
+                });
+                var $allPages = document.querySelectorAll(".img-cont");
+                var tmp ='';
+                $allPages.forEach(function(el) {
+                  el.classList.remove("animate");
+                  el.classList.remove("mob-img-animate");
+                });
               }
           });
-          if(isMobileDevice) {
-            $allmain.forEach(function(el) {
-              el.classList.remove("mob-bg");
-            });
-            var $allPages = document.querySelectorAll(".img-cont");
-            $allPages.forEach(function(el) {
-              el.classList.remove("animate");
-              var tmp ='';
-              if(str ==  '.one') {
-                tmp ='.cont-1';
-              } else if(str ==  '.two') {
-                tmp ='.cont-2';
-              } else if(str ==  '.three') {
-                tmp ='.cont-3';
-              } else if(str ==  '.four'){
-                tmp ='.cont-4';
-              }
-              document.querySelector(tmp).classList.add("mob-img-animate");
-            });
-  
-          }
+         
       }, 2000);
+      setTimeout(function() {
+        if(isMobileDevice) {
+          if(str ==  '.one') {
+            tmp ='.cont-1';
+          } else if(str ==  '.two') {
+            tmp ='.cont-2';
+          } else if(str ==  '.three') {
+            tmp ='.cont-3';
+          } else if(str ==  '.four'){
+            tmp ='.cont-4';
+          }
+          document.querySelector(tmp).classList.add("mob-img-animate");
+
+        }
+      }, 3000);
       curPage = page;
   }
 
+  /*********Page link event****************** */
   var elements = document.getElementsByClassName("page-lnk");
   Array.from(elements).forEach(function(el) {
       el.addEventListener('click', linkClick);
   });
 
+  /*********Page link click event call****************** */
   function linkClick(el) {
       let selPage = el.target.getAttribute("data-page");
       if (selPage != curPage) {
@@ -170,12 +177,7 @@
       }
   }
 
-  var oldScrollY = 0;
-
-  window.addEventListener('scroll', function(e) {
-      oldScrollY = window.scrollY;
-  });
-
+  /*********Method to init page move****************** */
   function initScrolling(e) {
       if (!scrolling) {
           let direction = detectMouseWheelDirection();
@@ -190,12 +192,7 @@
       }
   }
 
-  function keyPressEvent(e) {
-    if (!scrolling) {
-
-    }
-  }
-
+  /*********Method to detect Mouse wheel direction****************** */
   function detectMouseWheelDirection(e) {
       var delta = null,
           direction = false;
@@ -222,16 +219,21 @@
   var isMobView = false;
   var isWebView = false;
   window.onresize = function(event) {
-    if(window.innerWidth <=600 && !isMobView) {
+    if(window.innerWidth <=1025 && !isMobView) {
       isMobView = true;
       isMobileDevice = true;
       isWebView = false;
     }
-    if(window.innerWidth > 601 && !isWebView) {
+    if(window.innerWidth > 1025 && !isWebView) {
       isWebView = true;
       isMobileDevice = false;
       isMobView = false;
     }
   };
+
+  /*********Animation on Page Load****************** */
+  setTimeout(function() {
+    pagination(1);
+  }, 1000);
 
 })();
