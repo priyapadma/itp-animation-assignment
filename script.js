@@ -179,27 +179,32 @@
   function initScrolling(e) {
       if (!scrolling) {
           let direction = detectMouseWheelDirection();
+          e = e || window.event;
          // if (e.wheelDelta > 0 || e.detail < 0) {
-           console.log("--------direction------"+direction)
-          if (direction=='up') {
-            console.log("navigateUp")
+          if (direction=='up' || e.keyCode == '38') {
             navigateUp();
-          } else { 
-            console.log("navigateDown")
+          }
+          else if (direction=='down' || e.keyCode == '40') {
             navigateDown();
           }
       }
   }
 
+  function keyPressEvent(e) {
+    if (!scrolling) {
+
+    }
+  }
+
   function detectMouseWheelDirection(e) {
       var delta = null,
           direction = false;
-      if (!e) { // if the event is not provided, we get it from the window object
+      if (!e) {
           e = window.event;
       }
-      if (e.wheelDelta) { // will work in most cases
+      if (e.wheelDelta) {
           delta = e.wheelDelta / 60;
-      } else if (e.detail) { // fallback for Firefox
+      } else if (e.detail) {
           delta = -e.detail / 2;
       }
       if (delta !== null) {
@@ -212,6 +217,7 @@
   document.addEventListener('wheel', initScrolling);
   document.addEventListener('mousewheel', initScrolling);
   document.addEventListener('DOMMouseScroll', initScrolling);
+  document.onkeydown = initScrolling;
 
   var isMobView = false;
   var isWebView = false;
